@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/20_02_24_clase/sqlite.py" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/20_02_24_clase/insercion_bdd.py" dialect="GenericSQL" />
     <file url="PROJECT" dialect="SQLite" />
   </component>
 </project>
