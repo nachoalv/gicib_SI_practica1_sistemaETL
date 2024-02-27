@@ -14,21 +14,21 @@ cur.execute('''CREATE TABLE legal ( nombre      TEXT,
 
 cur.execute('''DROP TABLE IF EXISTS usuarios''')
 cur.execute('''CREATE TABLE usuarios (  nombre      TEXT,
-                                        telefono    INTEGER NOT NULL,
+                                        telefono    INTEGER,
                                         contrasena  TEXT NOT NULL,
-                                        provincia	TEXT NOT NULL,
+                                        provincia	TEXT,
                                         permisos	INTEGER NOT NULL CHECK(permisos in (0,1)),
-                                        emails_total INTEGER,
-                                        emails_phishing INTEGER,
-                                        emails_clicados INTEGER,
+                                        emails_total INTEGER NOT NULL,
+                                        emails_phishing INTEGER NOT NULL,
+                                        emails_clicados INTEGER NOT NULL,
                                         PRIMARY KEY(nombre))''')
 
 
 cur.execute('''DROP TABLE IF EXISTS cambio_psw''')
 cur.execute('''CREATE TABLE "cambio_psw" ( "id"        INTEGER,
-                                        "fecha"     TEXT,
+                                        "fecha"     TEXT NOT NULL,
                                         "ip"        TEXT,
-                                        "usuario"   TEXT,
+                                        "usuario"   TEXT NOT NULL,
 	                                    FOREIGN KEY("usuario") REFERENCES "usuarios"("nombre") ON UPDATE CASCADE ON DELETE CASCADE,
 	                                    PRIMARY KEY("id" AUTOINCREMENT))''')
 
@@ -46,21 +46,29 @@ users_data = json.load(f)
 for item in users_data["usuarios"]:
     key = list(item.keys())[0]
     user = item[key]
+    if user['telefono'] == 'None':
+        tlf = None
+    else:
+        tlf = user['telefono']
+    if user['provincia'] == 'None':
+        prv = None
+    else:
+        prv = user['provincia']
     cur.execute(
         '''INSERT INTO usuarios (nombre, telefono, contrasena, provincia, permisos, emails_total, emails_phishing, emails_clicados) VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-        (key, user['telefono'], user['contrasena'], user['provincia'], user['permisos'], user['emails']['total'],
+        (key, tlf, user['contrasena'], prv, user['permisos'], user['emails']['total'],
          user['emails']['phishing'], user['emails']['cliclados']))
     for i in range(len(user['fechas'])):
         if user['ips'] == 'None':
-            value = 'None'
+            ips = None
         else:
-            value = user['ips'][i]
+            ips = user['ips'][i]
 
         fecha = user['fechas'][i] if 'fechas' in user and i < len(user['fechas']) else None
         ip = user['ips'][i] if 'ips' in user and i < len(user['ips']) else None
 
         cur.execute('''INSERT INTO cambio_psw (fecha, ip, usuario) VALUES (?, ?, ?)''',
-                    (user['fechas'][i], value, key))
+                    (user['fechas'][i], ips, key))
 
 con.commit()
 con.close()
