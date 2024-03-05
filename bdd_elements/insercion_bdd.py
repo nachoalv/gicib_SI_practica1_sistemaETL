@@ -1,7 +1,23 @@
+import hashlib
 import json
 import sqlite3
 
+
+def cargar_wordlist(diccionario):
+    with open(diccionario, 'r', encoding='latin-1') as f:
+        return [line.strip() for line in f]
+
+
+def hash_md5(passwd):
+    return hashlib.md5(passwd.encode()).hexdigest()
+
+
+def es_passwd_debil(hash_passwd, passwds_debiles):
+    return hash_passwd in passwds_debiles
+
+
 if __name__ == '__main__':
+    passwds_debiles = set(hash_md5(passwd) for passwd in cargar_wordlist('../data/SmallRockYou.txt'))
 
     con = sqlite3.connect("gicib_SI_practica1_sistemaETL.db")
     cur = con.cursor()
@@ -22,6 +38,7 @@ if __name__ == '__main__':
                                             emails_total INTEGER NOT NULL,
                                             emails_phishing INTEGER NOT NULL,
                                             emails_clicados INTEGER NOT NULL,
+                                            pwd_debil   INTEGER NOT NULL CHECK(pwd_debil in (0,1)),
                                             PRIMARY KEY(nombre))''')
 
 
@@ -55,10 +72,14 @@ if __name__ == '__main__':
             prv = None
         else:
             prv = user['provincia']
+        if user['contrasena'] in passwds_debiles:
+            debil = 1
+        else:
+            debil = 0
         cur.execute(
-            '''INSERT INTO usuarios (nombre, telefono, contrasena, provincia, permisos, emails_total, emails_phishing, emails_clicados) VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+            '''INSERT INTO usuarios (nombre, telefono, contrasena, provincia, permisos, emails_total, emails_phishing, emails_clicados, pwd_debil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
             (key, tlf, user['contrasena'], prv, user['permisos'], user['emails']['total'],
-             user['emails']['phishing'], user['emails']['cliclados']))
+             user['emails']['phishing'], user['emails']['cliclados'], debil))
         for i in range(len(user['fechas'])):
             if user['ips'] == 'None':
                 ips = None
