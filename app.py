@@ -6,6 +6,9 @@ import base64
 from io import BytesIO
 from matplotlib.figure import Figure
 import matplotlib
+
+from bdd_elements.prueba_ej4 import ej4ap3
+
 matplotlib.use('Agg')
 
 
@@ -45,7 +48,8 @@ def criticos():
 
 @app.route('/politicas')
 def politicas():
-    return render_template('politicas.html')
+    politicas_desactualizadas = ej4ap3("./bdd_elements")
+    return render_template('politicas.html', politicas=politicas_desactualizadas.to_dict(orient='records'))
 
 
 if __name__ == '__main__':

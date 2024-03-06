@@ -2,6 +2,19 @@ import sqlite3
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def ej4ap3(ruta):
+    query_politicas_desactualizadas = '''
+            SELECT nombre, cookies, aviso, proteccion_de_datos
+            FROM legal
+            GROUP BY nombre
+            ORDER BY cookies + aviso + proteccion_de_datos DESC
+            LIMIT 5
+        '''
+    con = sqlite3.connect(f"{ruta}/gicib_SI_practica1_sistemaETL.db")
+    df_politicas_desactualizadas = pd.read_sql_query(query_politicas_desactualizadas, con)
+    con.close()
+
+    return df_politicas_desactualizadas[['nombre', 'cookies', 'aviso', 'proteccion_de_datos']]
 
 if __name__ == '__main__':
     # Declaración de las queries
@@ -45,6 +58,8 @@ if __name__ == '__main__':
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
+
+    print(ej4ap3("."))
 
 
 
