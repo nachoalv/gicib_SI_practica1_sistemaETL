@@ -1,13 +1,57 @@
 {% extends "layout.html" %}
 {% block title %}Media{% endblock %}
 {% block jumbo %}
-    <h1 class="display-5">Asies Media</h1>
+    <h1 class="display-5">Media de tiempo entre cambios</h1>
 {% endblock %}
 {% block main %}
     <section class="container mt-5 mb-5">
-        <h1>Prueba Media</h1>
-        Media de los Usuarios: {{ mediaUsuario }} <br>
-        Media de los Administradores: {{ mediaAdmin }} <br>
-        <img src="../static/img/{{ img_filename }}" alt="Gráfico de Medias">
+        <h6 class="font-weight-bold">Enunciado:</h6>
+        <p class="font-weight-normal">Mostrar la media de tiempo entre cambios de contraseña por usuario de usuarios normales frente a las de usuarios administradores</p>
+        <div class="row justify-content-around mt-4">
+            <div class="col d-flex align-items-center">
+                <ul>
+                    <li class="list-group-item">Media de los Usuarios: {{ mediaUsuario }}</li>
+                    <li class="list-group-item">Media de los Administradores: {{ mediaAdmin }}</li>
+                </ul>
+                <!--<img src="../static/img/{{ img_filename }}" alt="Gráfico de Medias">-->
+            </div>
+            <div class="col">
+              <canvas id="myChart"></canvas>
+            </div>
+        </div>
     </section>
+
+{% endblock %}
+{% block scripts %}
+    <script>
+    const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+        type: 'bar',
+  data: {
+    labels: ["Usuario", "Administrador"],
+    datasets: [{
+      label: 'Valor medio de tiempo entre cambios de contraseña',
+      data: [{{ mediaUsuario }}, {{ mediaAdmin}}],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  }
+      });
+  </script>
 {% endblock %}

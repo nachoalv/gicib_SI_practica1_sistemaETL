@@ -1,9 +1,13 @@
-import os
+
 from flask import Flask, render_template
 from bdd_elements.analisis_bd import mediaCambios2
 from matplotlib import pyplot as plt
+import base64
+from io import BytesIO
+from matplotlib.figure import Figure
 import matplotlib
 matplotlib.use('Agg')
+
 
 app = Flask(__name__)
 
