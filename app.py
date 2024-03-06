@@ -1,8 +1,12 @@
+import os
 from flask import Flask, render_template
 from bdd_elements.analisis_bd import mediaCambios2
 from matplotlib import pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():
@@ -14,6 +18,7 @@ def media_de_tiempo():
     medias = mediaCambios2("./bdd_elements")
     mediaUsuario = medias[0]
     mediaAdmin = medias[1]
+
     labels = ['Usuario', 'Administrador']
     plt.bar(labels, medias)
     plt.xlabel('Tipo de Usuario')
