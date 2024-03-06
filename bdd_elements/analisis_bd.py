@@ -1,6 +1,7 @@
 import sqlite3
 import pandas as pd
 
+
 def init():
     con = sqlite3.connect("gicib_SI_practica1_sistemaETL.db")
 
@@ -92,16 +93,39 @@ def mediaCambios():
 def mediaCambios2():
     con = sqlite3.connect("gicib_SI_practica1_sistemaETL.db")
     query_fechas = '''
-        SELECT usuario, fecha
+        SELECT usuario, fecha, permisos
         FROM cambio_psw 
+        JOIN usuarios ON cambio_psw.usuario = usuarios.nombre
         WHERE usuario IN (SELECT nombre FROM usuarios WHERE telefono IS NOT NULL AND provincia IS NOT NULL) 
         '''
 
     usuarios_fechas_cambio_psw = pd.read_sql_query(query_fechas, con)
+    usuarios_fechas_cambio_psw['fecha'] = pd.to_datetime(usuarios_fechas_cambio_psw['fecha'], format="%d/%m/%Y")
 
-    dates = pd.to_datetime(usuarios_fechas_cambio_psw['fecha'], format="%d/%m/%Y")
+    usuarios_fechas_cambio_psw = usuarios_fechas_cambio_psw.sort_values('fecha')
+    grouped_by_user = usuarios_fechas_cambio_psw.groupby('usuario')
 
-    print(dates.mean())
+    info_needed_arr = []
+
+    for user, group in grouped_by_user:
+        permisos = group['permisos'].iloc[0]
+        anterior = None
+        for index, fecha in enumerate(group['fecha']):
+            if index:
+                dif = fecha - anterior
+                info_needed_arr.append([user, dif.days, permisos])
+            anterior = fecha
+
+    info_needed_df = pd.DataFrame(info_needed_arr, columns=['usuario', 'dif', 'permisos'])
+    group_by_perm = info_needed_df.groupby('permisos')
+    for permisos, group in group_by_perm:
+        if permisos == 0:
+            tipo_usuario = 'Usuario'
+        elif permisos == 1:
+            tipo_usuario = 'Administrador'
+        print(f"\nAgrupacion: {tipo_usuario}")
+        print(group['dif'].mean())
+
 
 if __name__ == "__main__":
     mediaCambios2()
