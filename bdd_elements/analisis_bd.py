@@ -1,8 +1,6 @@
-import os
 import sqlite3
 
 import pandas as pd
-from matplotlib import pyplot as plt
 
 def init():
     con = sqlite3.connect("gicib_SI_practica1_sistemaETL.db")
@@ -130,19 +128,8 @@ def mediaCambios2(ruta):
             medias[1] = group['dif'].mean()
         # print(f"\nAgrupacion: {tipo_usuario}")
         # print(group['dif'].mean())
-    labels = ['Usuario', 'Administrador']
-    plt.bar(labels, medias)
-    plt.xlabel('Tipo de Usuario')
-    plt.ylabel('Media de Diferencia de Días')
-    plt.title('Medias de Diferencia de Días por Tipo de Usuario')
 
-    img_filename = "media_plot_ej4_1.png"
-
-    img_path = f"static/img/{img_filename}"
-    plt.savefig(img_path)
-    plt.close()
-
-    return medias, img_filename
+    return medias
 
 
 if __name__ == "__main__":
