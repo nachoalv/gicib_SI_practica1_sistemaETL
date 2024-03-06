@@ -4,8 +4,10 @@
     <h1 class="display-5">Asies Media</h1>
 {% endblock %}
 {% block main %}
-    <section class="container mt-5">
+    <section class="container mt-5 mb-5">
         <h1>Prueba Media</h1>
-        Media: {{ media }}
+        Media de los Usuarios: {{ mediaUsuario }} <br>
+        Media de los Administradores: {{ mediaAdmin }} <br>
+        <img src="../static/img/{{ img_filename }}" alt="Gráfico de Medias">
     </section>
 {% endblock %}

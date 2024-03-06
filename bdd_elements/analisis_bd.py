@@ -1,6 +1,8 @@
+import os
 import sqlite3
-import pandas as pd
 
+import pandas as pd
+from matplotlib import pyplot as plt
 
 def init():
     con = sqlite3.connect("gicib_SI_practica1_sistemaETL.db")
@@ -77,8 +79,8 @@ def init():
     print("Valor mínimo del total de emails de phishing interactuados por admins:", min_emails_admin)
     print("Valor máximo del total de emails de phishing interactuados por admins:", max_emails_admin)
 
-def mediaCambios():
-    con = sqlite3.connect("./bdd_elements/gicib_SI_practica1_sistemaETL.db")
+def mediaCambios(ruta):
+    con = sqlite3.connect(f"{ruta}/gicib_SI_practica1_sistemaETL.db")
     query_fechas = '''
         SELECT fechas
         FROM cambio_psw 
@@ -90,8 +92,8 @@ def mediaCambios():
     return media_fechas
 
 
-def mediaCambios2():
-    con = sqlite3.connect("gicib_SI_practica1_sistemaETL.db")
+def mediaCambios2(ruta):
+    con = sqlite3.connect(f"{ruta}/gicib_SI_practica1_sistemaETL.db")
     query_fechas = '''
         SELECT usuario, fecha, permisos
         FROM cambio_psw 
@@ -118,14 +120,30 @@ def mediaCambios2():
 
     info_needed_df = pd.DataFrame(info_needed_arr, columns=['usuario', 'dif', 'permisos'])
     group_by_perm = info_needed_df.groupby('permisos')
+    medias = [0, 0]
     for permisos, group in group_by_perm:
         if permisos == 0:
-            tipo_usuario = 'Usuario'
+            # tipo_usuario = 'Usuario'
+            medias[0] = group['dif'].mean()
         elif permisos == 1:
-            tipo_usuario = 'Administrador'
-        print(f"\nAgrupacion: {tipo_usuario}")
-        print(group['dif'].mean())
+            # tipo_usuario = 'Administrador'
+            medias[1] = group['dif'].mean()
+        # print(f"\nAgrupacion: {tipo_usuario}")
+        # print(group['dif'].mean())
+    labels = ['Usuario', 'Administrador']
+    plt.bar(labels, medias)
+    plt.xlabel('Tipo de Usuario')
+    plt.ylabel('Media de Diferencia de Días')
+    plt.title('Medias de Diferencia de Días por Tipo de Usuario')
+
+    img_filename = "media_plot_ej4_1.png"
+
+    img_path = f"static/img/{img_filename}"
+    plt.savefig(img_path)
+    plt.close()
+
+    return medias, img_filename
 
 
 if __name__ == "__main__":
-    mediaCambios2()
+    mediaCambios2(".")
