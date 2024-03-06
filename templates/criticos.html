@@ -1,10 +1,54 @@
 {% extends "layout.html" %}
 {% block title %}Criticos{% endblock %}
 {% block jumbo %}
-    <h1 class="display-5">Asies Criticos</h1>
+    <h1 class="display-5">Usuarios más críticos</h1>
 {% endblock %}
 {% block main %}
-    <section class="container mt-5">
-        <h1>Prueba Criticos</h1>
+    <section class="container mt-5 mb-5">
+        <h6 class="font-weight-bold">Enunciado:</h6>
+        <p class="font-weight-normal">Mostrar los 10 usuarios más críticos (un usuario crítico es aquel usuario que tiene la contraseña débil y además tiene mayor probabilidad de pulsar en un correo de spam), representadas en un gráfico de barras.</p>
+        <div class="row mt-4 justify-content-md-center">
+            <div class="col-10 col-md-6 h-75 d-inline-block mx-auto text-center">
+              <canvas id="myChart"></canvas>
+            </div>
+        </div>
     </section>
+{% endblock %}
+{% block scripts %}
+    <script>
+    const ctx = document.getElementById('myChart');
+    const criticos = {{ criticos | tojson | safe }};
+    new Chart(ctx, {
+        type: 'bar',
+  data: {
+    labels: criticos.map(item => item.nombre),
+    datasets: [{
+      label: 'Usuarios más criticos',
+      data: criticos.map(item => item.probabilidad_spam),
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(78,235,54,0.2)',
+        'rgba(235,178,54,0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgb(66,235,54)',
+        'rgb(235,199,54)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  }
+      });
+  </script>
 {% endblock %}

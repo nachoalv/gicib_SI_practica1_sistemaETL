@@ -2,6 +2,21 @@ import sqlite3
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def ej4ap2(ruta):
+    query_usuarios_criticos = '''
+            SELECT nombre, emails_clicados * 1.0 / emails_phishing AS probabilidad_spam
+            FROM usuarios
+            WHERE pwd_debil = 1
+            ORDER BY probabilidad_spam DESC
+            LIMIT 10
+        '''
+    con = sqlite3.connect(f"{ruta}/gicib_SI_practica1_sistemaETL.db")
+    df_usuarios_criticos = pd.read_sql_query(query_usuarios_criticos, con)
+    con.close()
+
+    return df_usuarios_criticos[['nombre', 'probabilidad_spam']]
+
+
 def ej4ap3(ruta):
     query_politicas_desactualizadas = '''
             SELECT nombre, cookies, aviso, proteccion_de_datos
@@ -60,6 +75,7 @@ if __name__ == '__main__':
     plt.show()
 
     print(ej4ap3("."))
+    print(ej4ap2("."))
 
 
 

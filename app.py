@@ -7,7 +7,7 @@ from io import BytesIO
 from matplotlib.figure import Figure
 import matplotlib
 
-from bdd_elements.prueba_ej4 import ej4ap3
+from bdd_elements.prueba_ej4 import ej4ap3, ej4ap2
 
 matplotlib.use('Agg')
 
@@ -43,7 +43,8 @@ def media_de_tiempo():
 
 @app.route('/criticos')
 def criticos():
-    return render_template('criticos.html')
+    criticos = ej4ap2("./bdd_elements")
+    return render_template('criticos.html', criticos=criticos.to_dict(orient='records'))
 
 
 @app.route('/politicas')
