@@ -31,6 +31,28 @@ def ej4ap3(ruta):
 
     return df_politicas_desactualizadas[['nombre', 'cookies', 'aviso', 'proteccion_de_datos']]
 
+def ej4ap4(ruta):
+    query_cumplen_politicas = '''
+        SELECT nombre, creacion, cookies + aviso + proteccion_de_datos as cumplen_politicas
+        FROM legal
+    '''
+    con = sqlite3.connect(f"{ruta}/gicib_SI_practica1_sistemaETL.db")
+    df_cumplen_politicas = pd.read_sql_query(query_cumplen_politicas, con)
+    con.close()
+
+    cumplen = df_cumplen_politicas[df_cumplen_politicas['cumplen_politicas'] == 3]['creacion'].value_counts().sort_index()
+    no_cumplen = df_cumplen_politicas[df_cumplen_politicas['cumplen_politicas'] != 3]['creacion'].value_counts().sort_index()
+
+    nombres_cumplen = df_cumplen_politicas[df_cumplen_politicas['cumplen_politicas'] == 3].groupby('creacion')['nombre'].agg(list).reset_index()
+    nombres_no_cumplen = df_cumplen_politicas[df_cumplen_politicas['cumplen_politicas'] != 3].groupby('creacion')['nombre'].agg(list).reset_index()
+
+    df_resultado = pd.DataFrame({'cumplen': cumplen, 'no_cumplen': no_cumplen}).fillna(0).reset_index()
+
+    df_resultado = pd.merge(df_resultado, nombres_cumplen, on='creacion', how='left')
+    df_resultado = pd.merge(df_resultado, nombres_no_cumplen, on='creacion', how='left')
+    df_resultado = df_resultado.rename(columns={'nombre_x': 'nombres_cumplen', 'nombre_y': 'nombres_no_cumplen'})
+    return df_resultado
+
 if __name__ == '__main__':
     # Declaración de las queries
     query_usuarios_criticos = '''
@@ -76,6 +98,8 @@ if __name__ == '__main__':
 
     print(ej4ap3("."))
     print(ej4ap2("."))
+
+
 
 
 

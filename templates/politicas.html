@@ -12,6 +12,13 @@
               <canvas id="myChart"></canvas>
             </div>
         </div>
+        <h6 class="font-weight-bold">Enunciado:</h6>
+        <p class="font-weight-normal">Mostrar según el año de creación las webs que cumplen todas las políticas de privacidad, frente a las que no cumplen la política de privacidad.</p>
+        <div class="row mt-4 justify-content-md-center">
+            <div class="col-10 col-md-6 h-75 d-inline-block mx-auto text-center">
+              <canvas id="myChart2"></canvas>
+            </div>
+        </div>
     </section>
 {% endblock %}
 {% block scripts %}
@@ -20,6 +27,8 @@
 
     // Accede a la variable 'politicas' que pasaste desde Flask
     const politicas = {{ politicas | tojson | safe }};
+
+
 
     new Chart(ctx, {
         type: 'bar',
@@ -68,5 +77,54 @@
             }
         }
     });
+
+    const ctx2 = document.getElementById('myChart2');
+    const cumplen_politicas = {{ cumplen_politicas | tojson | safe }};
+
+
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: cumplen_politicas.map(item => item.creacion),
+            datasets: [
+                {
+                    label: 'Cumplen',
+                    data: cumplen_politicas.map(item => item.cumplen),
+                    backgroundColor: 'rgba(99,255,107,0.2)',
+                    borderColor: 'rgb(159,255,99)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'No cumplen',
+                    data: cumplen_politicas.map(item => item.no_cumplen),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255,99,132,1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        afterBody: function (context) {
+                            if (context[0].dataset["label"] == "Cumplen") {
+                                return cumplen_politicas[context[0].dataIndex]["nombres_cumplen"]
+                            } else {
+                                return cumplen_politicas[context[0].dataIndex]["nombres_no_cumplen"]
+                            }
+                        },
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Cumplimiento de políticas por año'
+                },
+            },
+            responsive: true,
+        }
+    });
+
+
     </script>
 {% endblock %}
