@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}EJ2{% endblock %}
+{% block jumbo %}
+    <h1 class="display-5 mt-5">Ejercicio 2</h1>
+{% endblock %}
+{% block main %}
+    <section class="container mt-3">
+        <h4>Resultados obtenidos:</h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">&emsp;Número de muestras: <b>{{ resultados['num_muestras'] }}</b> </li>
+            <li class="list-group-item">&emsp;Media del total de fechas en las que se ha cambiado la contraseña: <b>{{ resultados['media_fechas'] }}</b></li>
+            <li class="list-group-item">&emsp;Desviación estándar del total de fechas en las que se ha cambiado la contraseña: <b>{{ resultados['desviacion_fechas'] }}</b></li>
+            <li class="list-group-item">&emsp;Media del total de IPs que se han detectado: <b>{{ resultados['media_ips'] }}</b></li>
+            <li class="list-group-item">&emsp;Desviación estándar del total de IPs que se han detectado: <b>{{ resultados['desviacion_ips'] }}</b></li>
+            <li class="list-group-item">&emsp;Media del número de email interactuados de phishing: <b>{{ resultados['media_emails_phishing'] }}</b></li>
+            <li class="list-group-item">&emsp;Desviación estándar del número de email interactuados de phishing: <b>{{ resultados['desviacion_emails_phishing'] }}</b></li>
+            <li class="list-group-item">&emsp;Valor mínimo del total de emails recibidos: <b>{{ resultados['min_emails_total'] }}</b></li>
+            <li class="list-group-item">&emsp;Valor máximo del total de emails recibidos: <b>{{ resultados['max_emails_total'] }}</b></li>
+            <li class="list-group-item">&emsp;Valor mínimo del total de emails de phishing interactuados por admins: <b>{{ resultados['min_emails_admin'] }}</b></li>
+            <li class="list-group-item">&emsp;Valor máximo del total de emails de phishing interactuados por admins: <b>{{ resultados['max_emails_admin'] }}</b></li>
+        </ul>
+    </section>
+{% endblock %}
