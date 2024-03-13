@@ -4,10 +4,10 @@
     <h1 class="display-5 mt-5">Ejercicio 3</h1>
 {% endblock %}
 {% block main %}
-    <section class="container mt-3">
+    <section class="container mt-5">
         <h3>Resultados obtenidos:</h3>
-        <h4>&nbsp;Agrupaciones por permisos de usuario:</h4>
-        <h5>&ensp;Usuario:</h5>
+        <h4 class="mt-4">&nbsp;Agrupaciones por permisos de usuario:</h4>
+        <h5><b>&ensp;Usuario:</b></h5>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">&emsp;Numero de observaciones: <b>{{ info_user['num_observaciones'] }}</b> </li>
             <li class="list-group-item">&emsp;Numero de valores ausentes (missing): <b>{{ info_user['num_valores_ausentes'] }}</b></li>
@@ -17,7 +17,7 @@
             <li class="list-group-item">&emsp;Valor máximo: <b>{{ info_user['maximo'] }}</b></li>
             <li class="list-group-item">&emsp;Valor mínimo: <b>{{ info_user['minimo'] }}</b></li>
         </ul>
-        <h5>&ensp;Administrador:</h5>
+        <h5><b>&ensp;Administrador:</b></h5>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">&emsp;Numero de observaciones: <b>{{ info_admin['num_observaciones'] }}</b> </li>
             <li class="list-group-item">&emsp;Numero de valores ausentes (missing): <b>{{ info_admin['num_valores_ausentes'] }}</b></li>
@@ -27,8 +27,8 @@
             <li class="list-group-item">&emsp;Valor máximo: <b>{{ info_admin['maximo'] }}</b></li>
             <li class="list-group-item">&emsp;Valor mínimo: <b>{{ info_admin['minimo'] }}</b></li>
         </ul>
-        <h4>&nbsp;Agrupaciones por contraseñas:</h4>
-        <h5>&ensp;Contraseña débil:</h5>
+        <h4 class="mt-4">&nbsp;Agrupaciones por contraseñas:</h4>
+        <h5><b>&ensp;Contraseña débil:</b></h5>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">&emsp;Numero de observaciones: <b>{{ info_debil['num_observaciones'] }}</b> </li>
             <li class="list-group-item">&emsp;Numero de valores ausentes (missing): <b>{{ info_debil['num_valores_ausentes'] }}</b></li>
@@ -38,7 +38,7 @@
             <li class="list-group-item">&emsp;Valor máximo: <b>{{ info_debil['maximo'] }}</b></li>
             <li class="list-group-item">&emsp;Valor mínimo: <b>{{ info_debil['minimo'] }}</b></li>
         </ul>
-        <h5>&ensp;Contrseña fuerte:</h5>
+        <h5><b>&ensp;Contrseña fuerte:</b></h5>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">&emsp;Numero de observaciones: <b>{{ info_fuerte['num_observaciones'] }}</b> </li>
             <li class="list-group-item">&emsp;Numero de valores ausentes (missing): <b>{{ info_fuerte['num_valores_ausentes'] }}</b></li>
