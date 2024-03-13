@@ -2,6 +2,36 @@ import sqlite3
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def ej4ap1(ruta):
+    con = sqlite3.connect(f"{ruta}/gicib_SI_practica1_sistemaETL.db")
+    query_fechas = '''
+        SELECT usuario, fecha, permisos
+        FROM cambio_psw 
+        JOIN usuarios ON cambio_psw.usuario = usuarios.nombre
+        WHERE usuario IN (SELECT nombre FROM usuarios WHERE telefono IS NOT NULL AND provincia IS NOT NULL) 
+        '''
+
+    usuarios_fechas_cambio_psw = pd.read_sql_query(query_fechas, con)
+    usuarios_fechas_cambio_psw['fecha'] = pd.to_datetime(usuarios_fechas_cambio_psw['fecha'], format="%d/%m/%Y")
+
+    usuarios_fechas_cambio_psw = usuarios_fechas_cambio_psw.sort_values(['usuario', 'fecha'])
+    usuarios_fechas_cambio_psw['dif'] = usuarios_fechas_cambio_psw.groupby(['usuario', 'permisos']).diff()
+    usuarios_fechas_cambio_psw['dif'] = usuarios_fechas_cambio_psw['dif'].apply(lambda date: date.days)
+
+    group_by_perm = usuarios_fechas_cambio_psw.groupby('permisos')
+    medias = [0, 0]
+    for permisos, group in group_by_perm:
+        if permisos == 0:
+            # tipo_usuario = 'Usuario'
+            medias[0] = group['dif'].mean()
+        elif permisos == 1:
+            # tipo_usuario = 'Administrador'
+            medias[1] = group['dif'].mean()
+        # print(f"\nAgrupacion: {tipo_usuario}")
+        # print(group['dif'].mean())
+
+    return medias
+
 def ej4ap2(ruta):
     query_usuarios_criticos = '''
             SELECT nombre, emails_clicados * 1.0 / emails_phishing AS probabilidad_spam
@@ -22,7 +52,7 @@ def ej4ap3(ruta):
             SELECT nombre, cookies, aviso, proteccion_de_datos
             FROM legal
             GROUP BY nombre
-            ORDER BY cookies + aviso + proteccion_de_datos DESC
+            ORDER BY cookies + aviso + proteccion_de_datos ASC
             LIMIT 5
         '''
     con = sqlite3.connect(f"{ruta}/gicib_SI_practica1_sistemaETL.db")

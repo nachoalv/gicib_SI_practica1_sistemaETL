@@ -80,12 +80,12 @@ if __name__ == '__main__':
             '''INSERT INTO usuarios (nombre, telefono, contrasena, provincia, permisos, emails_total, emails_phishing, emails_clicados, pwd_debil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
             (key, tlf, user['contrasena'], prv, user['permisos'], user['emails']['total'],
              user['emails']['phishing'], user['emails']['cliclados'], debil))
+
         for i in range(len(user['fechas'])):
             if user['ips'] == 'None':
                 ips = None
             else:
                 ips = user['ips'][i]
-
             fecha = user['fechas'][i] if 'fechas' in user and i < len(user['fechas']) else None
             ip = user['ips'][i] if 'ips' in user and i < len(user['ips']) else None
 

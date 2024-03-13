@@ -8,14 +8,7 @@
         <h6 class="font-weight-bold">Enunciado:</h6>
         <p class="font-weight-normal">Mostrar la media de tiempo entre cambios de contraseña por usuario de usuarios normales frente a las de usuarios administradores</p>
         <div class="row justify-content-around mt-4">
-            <div class="col d-flex align-items-center">
-                <ul>
-                    <li class="list-group-item">Media de los Usuarios: {{ mediaUsuario }}</li>
-                    <li class="list-group-item">Media de los Administradores: {{ mediaAdmin }}</li>
-                </ul>
-                <!--<img src="../static/img/{{ img_filename }}" alt="Gráfico de Medias">-->
-            </div>
-            <div class="col">
+            <div class="col-10 col-md-6 h-75 d-inline-block mx-auto text-center">
               <canvas id="myChart"></canvas>
             </div>
         </div>
@@ -24,6 +17,7 @@
 {% endblock %}
 {% block scripts %}
     <script>
+    const medias = {{ medias | safe }};
     const ctx = document.getElementById('myChart');
     new Chart(ctx, {
         type: 'bar',
@@ -31,7 +25,7 @@
     labels: ["Usuario", "Administrador"],
     datasets: [{
       label: 'Valor medio de tiempo entre cambios de contraseña',
-      data: [{{ mediaUsuario }}, {{ mediaAdmin}}],
+      data: medias,
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)'
