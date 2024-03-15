@@ -47,14 +47,16 @@ def init(ruta):
         elif permisos == 1:
             tipo_usuario = 'Administrador'
             info_admin = {k: v for (k, v) in zip(keys, info)}
-        #print(f"\nAgrupacion: {tipo_usuario}")
-        #print("Numero de observaciones:", info[0])
-        #print("Numero de valores ausentes (missing):", info[1])
-        #print("Mediana:", info[2])
-        #print("Media:", info[3])
-        #print("Varianza:", info[4])
-        #print("Valor máximo:", info[5])
-        #print("Valor mínimo:", info[6])
+        '''    
+        print(f"\nAgrupacion: {tipo_usuario}")
+        print("Numero de observaciones:", info[0])
+        print("Numero de valores ausentes (missing):", info[1])
+        print("Mediana:", info[2])
+        print("Media:", info[3])
+        print("Varianza:", info[4])
+        print("Valor máximo:", info[5])
+        print("Valor mínimo:", info[6])
+        '''
 
     info_debil = None
     info_fuerte = None
@@ -67,14 +69,18 @@ def init(ruta):
         else:
             tipo_passwd = 'Fuerte'
             info_fuerte = {k: v for (k, v) in zip(keys, info)}
-        #print(f"\nTipo de contraseña: {tipo_passwd}")
-        #print("Numero de observaciones:", info[0])
-        #print("Numero de valores ausentes (missing):", info[1])
-        #print("Mediana:", info[2])
-        #print("Media:", info[3])
-        #print("Varianza:", info[4])
-        #print("Valor máximo:", info[5])
-        #print("Valor mínimo:", info[6])
+
+        '''
+        print(f"\nTipo de contraseña: {tipo_passwd}")
+        print("Numero de observaciones:", info[0])
+        print("Numero de valores ausentes (missing):", info[1])
+        print("Mediana:", info[2])
+        print("Media:", info[3])
+        print("Varianza:", info[4])
+        print("Valor máximo:", info[5])
+        print("Valor mínimo:", info[6])
+        '''
+
     return info_user, info_admin, info_debil, info_fuerte
 
 
