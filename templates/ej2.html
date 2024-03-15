@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block title %}EJ2{% endblock %}
 {% block jumbo %}
-    <h1 class="display-5 mt-5">Ejercicio 2</h1>
+    <h1 class="display-5 mt-5">&ensp;Ejercicio 2<a class="nav-link d-inline" href="/3"> ></a></h1>
 {% endblock %}
 {% block main %}
     <section class="container mt-5">
-        <h4>Resultados obtenidos:</h4>
+        <h3>Resultados obtenidos:</h3>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">&emsp;Número de muestras: <b>{{ resultados['num_muestras'] }}</b> </li>
             <li class="list-group-item">&emsp;Media del total de fechas en las que se ha cambiado la contraseña: <b>{{ resultados['media_fechas'] }}</b></li>

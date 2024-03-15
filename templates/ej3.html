@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}EJ3{% endblock %}
 {% block jumbo %}
-    <h1 class="display-5 mt-5">Ejercicio 3</h1>
+    <h1 class="display-5 mt-5"><a class="nav-link d-inline" href="/2">< </a>Ejercicio 3<a class="nav-link d-inline" href="/4"> ></a></h1>
 {% endblock %}
 {% block main %}
     <section class="container mt-5">
@@ -48,6 +48,5 @@
             <li class="list-group-item">&emsp;Valor máximo: <b>{{ info_fuerte['maximo'] }}</b></li>
             <li class="list-group-item">&emsp;Valor mínimo: <b>{{ info_fuerte['minimo'] }}</b></li>
         </ul>
-
     </section>
 {% endblock %}
