@@ -43,7 +43,7 @@ def init(ruta):
         WHERE permisos = 1 AND telefono IS NOT NULL AND provincia IS NOT NULL
     '''
 
-    num_muestras = pd.read_sql_query(query_num_muestras, con).iloc[0, 0]
+    count_muestras = pd.read_sql_query(query_num_muestras, con)
     fechas_cambio_psw = pd.read_sql_query(query_fechas, con)
     ips_detectadas = pd.read_sql_query(query_ips, con)
     emails_phishing = pd.read_sql_query(query_emails_phishing, con)
@@ -51,7 +51,7 @@ def init(ruta):
     emails_total = pd.read_sql_query(query_emails_total, con)
     con.close()
 
-    resultados = {"num_muestras": num_muestras,
+    resultados = {"num_muestras": count_muestras.iloc[0, 0],
                   "media_fechas": fechas_cambio_psw.mean().values[0],
                   "media_ips": ips_detectadas.mean().values[0],
                   "media_emails_phishing": emails_phishing.mean().values[0],
