@@ -15,14 +15,14 @@ def index():
 
 @app.route('/2')
 def ej2():
-    resultados = get_results("./utils")
+    resultados = get_results("./bdd_elements")
 
     return render_template('ej2.html', resultados=resultados)
 
 
 @app.route('/3')
 def ej3():
-    info_user, info_admin, info_debil, info_fuerte = get_info_by_group("./utils")
+    info_user, info_admin, info_debil, info_fuerte = get_info_by_group("./bdd_elements")
 
     return render_template('ej3.html',
                            info_user=info_user, info_admin=info_admin,
@@ -31,11 +31,11 @@ def ej3():
 
 @app.route('/4')
 def ej4():
-    medias = ej4ap1("./utils")
+    medias = ej4ap1("./bdd_elements")
     medias_json = json.dumps(medias)
-    criticos = ej4ap2("./utils")
-    politicas_desactualizadas = ej4ap3("./utils")
-    cumplen_politicas = ej4ap4("./utils")
+    criticos = ej4ap2("./bdd_elements")
+    politicas_desactualizadas = ej4ap3("./bdd_elements")
+    cumplen_politicas = ej4ap4("./bdd_elements")
 
     return render_template('ej4.html',
                            medias=medias_json,
